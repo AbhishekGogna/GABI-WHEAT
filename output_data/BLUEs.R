@@ -33,32 +33,6 @@ get_check_list <- function(data){
   return(check_list)
 }
 
-model <- function(fix_term, rand_term, data){
-  asreml.options(maxit = 50,             
-                 workspace = "128mb",       
-                 pworkspace = "128mb",
-                 trace=F)
-  
-  fit_model <- asreml(fixed = as.formula(fix_term),
-                      random = as.formula(paste0("~ ", 
-                                                 paste(rand_term, 
-                                                       collapse = " + ")
-                                                 )
-                                          ),
-                      data = data)
-  
-  return(fit_model)
-}
-
-get_variance_components <- function(asreml_obj, rand_term){
-  out <- list()
-  for (i in rand_term){
-    out[[i]] <- summary(asreml_obj)$varcomp[i , "component"]
-  }
-  out[["units!R"]] <- summary(asreml_obj)$varcomp["units!R" , "component"]
-  return(out)
-}
-
 BLUEs <- function(data, 
                   pheno, 
                   heritability = T, 
