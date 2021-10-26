@@ -181,73 +181,8 @@ BLUEs <- function(data,
     }
   }else{
     com_BLUEs <- merge(BLUEs_rep_wide, B.acr)
-  }
-  
-  # Calculating heritabilities
-  
-  sigma.g <- summary(env.1)$varcomp["Coding","component"]
-  
-  if (length(env.un)>0){
-    if (length(env)>0){
-      sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-mean(residual)/mean(check_list$rep_indices)
-      print(cbind(pheno, sigma.g.e))
-      sigma.e <- mean(residual)
-    }else{
-      sigma.g.e <- NA
-      sigma.e <- summary(env.1)$varcomp["units!R","component"]
     }
-  }else{sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-(mean(residual)/2)
-  print(cbind(pheno, sigma.g.e))
-  sigma.e <- mean(residual)
-  }  
-  
-  if(is.na(sigma.g.e)){
-    
-    herit <-  sigma.g/(sigma.g + sigma.e/length(env.un)) 
-    message(paste0("Since there are no replicates the term for sigma g_e was omitted"))
-    message( paste0("heritability_entry_mean_based = ", herit))
-    
-    herit_plot<- sigma.g/(sigma.g + sigma.e) 
-    message(paste0("heritability_plot_based = ", herit_plot))
-    
-  }else{
-    
-    herit <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(2*length(env))) 
-    message(paste0("heritability_entry_mean_based = ", herit))
-    
-    herit_plot<- sigma.g/(sigma.g + sigma.g.e + sigma.e) 
-    message(paste0("heritability_plot_based = ", herit_plot))
-    
-  }
-  
-  # Producing outputs
-  
-  output <- list()
-  
-  if (repeatab == T) {
-    if (length(env) > 0){
-      output["Repeatability"] <- list(repeatability_df)
-    }else {
-      repeatability <- NA
-      output["Repeatability"] <- repeatability
-    }
-  } 
-  
-  if (heritability == T) {
-    output["Heritabiliy_entry"] <- herit
-  }
-  
-  if (heritability_plot == T) {
-    output["Heritabiliy_plot"] <- herit_plot
-  }
-  
-  if (BLUE == T) {
-    output["BLUEs"] <- list(com_BLUEs)
-  }
-  
-  return(output)
-  } else if ((pheno %in% traits_trial_2)[1])
-    {
+  } else if ((pheno %in% traits_trial_2)[1]){
     
     trait <- data %>% 
       convert(fct(Coding,rep, year, loc)) %>%
@@ -315,36 +250,74 @@ BLUEs <- function(data,
     env.2 <- asreml(fixed = trait ~  Coding, 
                     random = ~ env,
                     data = dta)
-    
-    sigma.g <- summary(env.1)$varcomp["Coding","component"]
-    sigma.g.e <- summary(env.1)$varcomp["units!R","component"] - mean(residual)/mean(check_list$rep_indices)
-    print(cbind(pheno, sigma.g.e))
-    sigma.e <- mean(residual)
-    
-    herit_entry_mean <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(2*length(env)))
-    message(paste0("heritability_entry_based = ", herit_entry_mean))
-    
-    herit_plot <- sigma.g/(sigma.g + sigma.g.e + sigma.e)
-    message(paste0("heritability_plot_based = ", herit_plot))
-    
     Blues.acr <- predict.asreml(env.2, classify = "Coding",)$pvals[,2]
     
+    # wide form blues
+    
     com_BLUEs <- cbind(BLUES, Blues.acr)
-    
-    # Producing outputs
-    
-    output <- list()
-    
-    output["Repeatability"] <- list(repeatability_df)
-    
-    output["Heritabiliy_entry"] <- herit_entry_mean
-    
-    output["Heritabiliy_plot"] <- herit_plot
-    
-    output["BLUEs"] <- list(com_BLUEs)
-  
-    return(output) 
   }
+  
+  # Calculating heritabilities
+  
+  sigma.g <- summary(env.1)$varcomp["Coding","component"]
+  
+  if (length(env.un)>0){
+    if (length(env)>0){
+      sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-mean(residual)/mean(check_list$rep_indices)
+      sigma.e <- mean(residual)
+    }else{
+      sigma.g.e <- NA
+      sigma.e <- summary(env.1)$varcomp["units!R","component"]
+    }
+  }else{sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-(mean(residual)/2)
+  print(cbind(pheno, sigma.g.e))
+  sigma.e <- mean(residual)
+  }  
+  
+  if(is.na(sigma.g.e)){
+    
+    herit <-  sigma.g/(sigma.g + sigma.e/length(env.un)) 
+    message(paste0("Since there are no replicates the term for sigma g_e was omitted"))
+    message( paste0("heritability_entry_mean_based = ", herit))
+    
+    herit_plot<- sigma.g/(sigma.g + sigma.e) 
+    message(paste0("heritability_plot_based = ", herit_plot))
+    
+  }else{
+    
+    herit <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(2*length(env))) 
+    message(paste0("heritability_entry_mean_based = ", herit))
+    
+    herit_plot<- sigma.g/(sigma.g + sigma.g.e + sigma.e) 
+    message(paste0("heritability_plot_based = ", herit_plot))
+  }
+  
+  # Producing outputs
+  
+  output <- list()
+  
+  if (repeatab == T) {
+    if (length(env) > 0){
+      output["Repeatability"] <- list(repeatability_df)
+    }else {
+      repeatability <- NA
+      output["Repeatability"] <- repeatability
+    }
+  } 
+  
+  if (heritability == T) {
+    output["Heritabiliy_entry"] <- herit
+  }
+  
+  if (heritability_plot == T) {
+    output["Heritabiliy_plot"] <- herit_plot
+  }
+  
+  if (BLUE == T) {
+    output["BLUEs"] <- list(com_BLUEs)
+  }
+  
+  return(output) 
 }
 
 my_data <- readRDS("~/GABI/output_data/isa_data.Rdata")
