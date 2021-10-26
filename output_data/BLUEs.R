@@ -44,8 +44,7 @@ BLUEs <- function(data,
   library(hablar)
   `%!in%` = Negate(`%in%`)
   
-  if ((pheno %in% traits_trial_1)[1])
-    {
+  if ((pheno %in% traits_trial_1)[1]){
   trait <- data %>% 
     convert(fct(Coding, block, rep, year, loc)) %>%
     mutate(id = paste0(loc, ".", year))
@@ -202,8 +201,7 @@ BLUEs <- function(data,
     
     #BLUEs within env
     
-    for (i in 1:length(env))
-    {
+    for (i in 1:length(env)){
       env_n <- env[i] %>% as.character()
       field.red <- trait %>% filter(id == env_n) %>% droplevels()
       
