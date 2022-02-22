@@ -1,4 +1,23 @@
-#Dummy R script
+# R version 4.0.2
+
+# Packages
+from_cran <- c("tidyverse",  # v1.3.1 
+               "asreml", # v4.1.0.110
+               "hablar") # v0.3.0
+
+for (i in from_cran){
+  if (!requireNamespace(i, quietly = TRUE)) 
+    install.packages(i)}
+
+if(sum(unlist(lapply(from_cran, require, character.only = TRUE))) == length(from_cran)) {
+  print("All required packages are present and are loaded. Version check was not done.")
+} else {
+    print("Some packages were not loaded or are not installed. Please install and load packages manually")
+  }
+
+# Functions
+`%!in%` = Negate(`%in%`)
+
 get_check_list <- function(data){
   split_by_rep <- data %>% 
     group_by(id, rep) %>% 
@@ -39,15 +58,11 @@ BLUEs <- function(data,
                   heritability_plot = T, 
                   repeatab = T, 
                   BLUE = T){
-  library(tidyverse)
-  library(asreml)
-  library(hablar)
-  `%!in%` = Negate(`%in%`)
   
   if ((pheno %in% traits_trial_1)[1]){
   trait <- data %>% 
     convert(fct(Coding, block, rep, year, loc)) %>%
-    mutate(id = paste0(loc, ".", year))
+    mutate(id = paste0(loc, ".", year)) # Convert data columns to required data classes
   
   #trait %>% group_by(id) %>% summarise(n = n()) # shows values per environment
   
@@ -59,7 +74,7 @@ BLUEs <- function(data,
   
   env.un <- check_list$id[which(check_list$rep_indices==1)]
   
-  #For replicated environment
+  #For replicated environment follows thoery from the original publication
   
   if (length(env) > 0){
     repeatability <- rep(NA, length(env))
@@ -268,7 +283,6 @@ BLUEs <- function(data,
       sigma.e <- summary(env.1)$varcomp["units!R","component"]
     }
   }else{sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-(mean(residual)/2)
-  print(cbind(pheno, sigma.g.e))
   sigma.e <- mean(residual)
   }  
   
@@ -318,10 +332,50 @@ BLUEs <- function(data,
   return(output) 
 }
 
-my_data <- readRDS("~/GABI/output_data/isa_data.Rdata")
+process_isa_files <- function(study_file_path, assay_file_path){
+  # Read files
+  study <- read.delim(study_file_path) 
+  assay <- read.delim(assay_file_path)
+  
+  # Process files
+  assay_ana <- assay %>% select("Sample.Name", grep("Parameter.Value", colnames(assay), value = T))
+  
+  if(length(grep("block", colnames(study), ignore.case = T, value = T)) !=0){
+    study_cols <- c("Source.Name", "Characteristics.Original.Coding.", 
+                    "Sample.Name", "Factor.Value.year.", "Factor.Value.loc.", 
+                    "Factor.Value.rep.", "Factor.Value.block.")
+  } else if (length(grep("block", colnames(study), ignore.case = T, value = T)) ==0){
+    study_cols <- c("Source.Name", "Characteristics.Original.Coding.", 
+                    "Sample.Name", "Factor.Value.year.", "Factor.Value.loc.", 
+                    "Factor.Value.rep.")
+  }
+  
+  phenodata <- study %>% select(all_of(study_cols)) %>%
+    left_join(assay_ana, by = "Sample.Name") %>%
+    mutate(original_index = as.numeric(gsub("\\S+\\_(\\d+)", "\\1", Sample.Name, perl = T))) %>%
+    arrange(original_index) %>% select(-Sample.Name, -original_index, -Source.Name)
+  
+  colnames(phenodata) <- gsub("\\S+\\.\\S+\\.(\\S+)\\.", "\\1", colnames(phenodata), perl = T)
+  
+  # generate output
+  
+  return(phenodata)
+}
+
+# Load data for two trials
+
+my_data <- list() #  creates empty list to store loaded data
+
+my_data[["trial_1"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_1/s_trial_1.txt", 
+                                          assay_file_path = "~/GABI/output_data/isa_files/trial_1/a_trial_1.txt") # loads data from trial 1
+
+my_data[["trial_2"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_2/s_trial_2.txt", 
+                                          assay_file_path = "~/GABI/output_data/isa_files/trial_2/a_trial_2.txt") # loads data fro trial 2
 
 traits_trial_1 <- c("HD", "PH", "TKW" , "EW", "GPE", "GY", "SW", "GH", "STC", "PC", "SDS", "HAG", "ZEL") 
 traits_trial_2 <- c( "FHB", "DTR", "SEP") 
+
+# Calculate BLUES
 
 for (i in traits_trial_1){
   
@@ -385,6 +439,3 @@ for (i in traits_trial_2){
 #FHB                 0.883
 #DTR                 0.262
 #SEP                 0.694
-
-B.acr <- check$BLUEs[, c("Coding", "Blues.acr")] %>% left_join(my_data$BLUEs[, c("Coding", trait)], by = "Coding")
-cor(B.acr$Blues.acr, B.acr[, trait], use = "complete.obs")
