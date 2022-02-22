@@ -1,0 +1,109 @@
+ONTOLOGY SOURCE REFERENCE
+Term Source Name	wheatpedigree	proplanta	NCBITaxon	UO
+Term Source File	http://wheatpedigree.net/	https://www.proplanta.de/Pflanzenbauberater/Sorten/	http://purl.obolibrary.org/obo/ncbitaxon	http://www.ontobee.org/ontology/UO?iri=http://purl.obolibrary.org/obo/
+Term Source Version				
+Term Source Description	Pedigrees of cultivars	Cultivar information	Agronomy Ontology	Units of Measurement Ontology
+INVESTIGATION
+Investigation Identifier	
+Investigation Title	Panel of pan-european elite wheat cultivars
+Investigation Description	In plant sciences, curation of quality phenotypic data often traverses temporal scales that extend well into few years and are thus a constant impediment for rapid scientific discoveries therein. To that end, supplementing the rapid efforts being made to generate open access wheat genome, pan wheat genome and other bioinformatic resources, we present herein the phenotypic data of a time-tested elite European cultivar panel comprising 358 winter and 14 summer wheat varieties released between 1975 to 2007.
+Investigation Submission Date	2022-02-22
+Investigation Public Release Date	
+Comment[Consortium URI]	
+Comment[Investigation Keywords]	
+Comment[License]	CC BY-NC-SA 4.0
+Comment[MIAPPE version]	1.1
+Comment[Owning Organisation URI]	http://www.ipk-gatersleben.de/
+INVESTIGATION PUBLICATIONS
+Investigation PubMed ID
+Investigation Publication DOI
+Investigation Publication Author List
+Investigation Publication Title
+Investigation Publication Status
+Investigation Publication Status Term Accession Number
+Investigation Publication Status Term Source REF
+INVESTIGATION CONTACTS
+Investigation Person Last Name	Gogna	Schulthess	Röder	Martin	Reif
+Investigation Person First Name	Abhishek	Albert	Marion	Ganal	Jochen
+Investigation Person Mid Initials		W.	S.	W.	C.
+Investigation Person Email	gogna@ipk-gatersleben.de	schulthess@ipk-gatersleben.de	roder@ipk-gatersleben.de	martin.ganal@sgs.com	reif@ipk-gatersleben.de
+Investigation Person Phone					+49 39482 5-840
+Investigation Person Fax					
+Investigation Person Address	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany		Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany
+Investigation Person Affiliation	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Traitgenetics	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben
+Investigation Person Roles					
+Investigation Person Roles Term Accession Number					
+Investigation Person Roles Term Source REF					
+Comment[Person ID]	https://orcid.org/0000-0002-5990-1829	https://orcid.org/0000-0002-9365-0939	https://orcid.org/0000-0002-9313-0650		https://orcid.org/0000-0002-6742-265X
+STUDY
+Study Identifier	trial_1
+Study Title	Agronomic and quality traits
+Study Description	Phenotypic data for Agronomic and quality traits
+Study Submission Date	
+Study Public Release Date	
+Study File Name	s_trial_1.txt
+Comment[Study Contact Institution]	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK), OT Gatersleben, Corrensstrasse 3, D-06466 Seeland
+Comment[Study Country]	Germany
+Comment[Study End Date]	
+Comment[Study Experimental Site]	
+Comment[Study Latitude]	51.827721
+Comment[Study Longitude]	11.27778
+Comment[Study Start Date]	2009
+STUDY DESIGN DESCRIPTORS
+Study Design Type	
+Study Design Type Term Accession Number	
+Study Design Type Term Source REF	
+Comment[Observation Unit Level Hierarchy]	year>location>replication>block
+Comment[Observation Unit Description]	plot
+STUDY PUBLICATIONS
+Study PubMed ID
+Study Publication DOI
+Study Publication Author List
+Study Publication Title
+Study Publication Status
+Study Publication Status Term Accession Number
+Study Publication Status Term Source REF
+STUDY FACTORS
+Study Factor Name	year	loc	rep	block
+Study Factor Type	year	location	replication	block
+Study Factor Type Term Accession Number				
+Study Factor Type Term Source REF				
+Comment[Study Factor Description]	year	location	replication	block
+Comment[Study Factor Values]	2009;2010	AND;SEL;WOH;JAN;SAU	1;2	1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51;52;53;54;55;56;57;58;59;60;61;62;63;64;65;66;67;68;69;70;71;72;73;74;75;76;77;78;79;80
+STUDY ASSAYS
+Study Assay File Name	a_trial_1.txt
+Study Assay Measurement Type	Phenotypic and agronomic traits
+Study Assay Measurement Type Term Accession Number	
+Study Assay Measurement Type Term Source REF	
+Study Assay Technology Type	Manual scoring
+Study Assay Technology Type Term Accession Number	
+Study Assay Technology Type Term Source REF	
+Study Assay Technology Platform	
+STUDY PROTOCOLS
+Study Protocol Name	Phenotyping
+Study Protocol Type	Manual scoring
+Study Protocol Type Term Accession Number	
+Study Protocol Type Term Source REF	
+Study Protocol Description	
+Study Protocol URI	
+Study Protocol Version	
+Study Protocol Parameters Name	HD;PH;TKW;EW;GPE;GY;SW;GH;STC;PC;SDS;HAG;ZEL
+Study Protocol Parameters Name Term Accession Number	http://purl.obolibrary.org/obo/UO_0000033;http://purl.obolibrary.org/obo/UO_0000015;http://purl.obolibrary.org/obo/UO_0000021;http://purl.obolibrary.org/obo/UO_0000021;;;;http://purl.obolibrary.org/obo/UO_0000187;http://purl.obolibrary.org/obo/UO_0000187;http://purl.obolibrary.org/obo/UO_0000187;http://purl.obolibrary.org/obo/UO_0000098;http://purl.obolibrary.org/obo/UO_0000010;http://purl.obolibrary.org/obo/UO_0000098
+Study Protocol Parameters Name Term Source REF	UO;UO;UO;UO;UO;UO;UO;UO;UO;UO;UO;UO;UO
+Study Protocol Components Name	
+Study Protocol Components Type	
+Study Protocol Components Type Term Accession Number	
+Study Protocol Components Type Term Source REF	
+STUDY CONTACTS
+Study Person Last Name	Gogna	Schulthess	Röder	Martin	Reif
+Study Person First Name	Abhishek	Albert	Marion	Ganal	Jochen
+Study Person Mid Initials		W.	S.	W.	C.
+Study Person Email	gogna@ipk-gatersleben.de	schulthess@ipk-gatersleben.de	roder@ipk-gatersleben.de	martin.ganal@sgs.com	reif@ipk-gatersleben.de
+Study Person Phone					+49 39482 5-840
+Study Person Fax					
+Study Person Address	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany		Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany
+Study Person Affiliation	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Traitgenetics	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben
+Study Person Roles					
+Study Person Roles Term Accession Number					
+Study Person Roles Term Source REF					
+Comment[Person ID]	https://orcid.org/0000-0002-5990-1829	https://orcid.org/0000-0002-9365-0939	https://orcid.org/0000-0002-9313-0650		https://orcid.org/0000-0002-6742-265X
