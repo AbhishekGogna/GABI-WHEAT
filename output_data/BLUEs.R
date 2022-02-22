@@ -60,144 +60,149 @@ BLUEs <- function(data,
                   BLUE = T){
   
   if ((pheno %in% traits_trial_1)[1]){
-  trait <- data %>% 
-    convert(fct(Coding, block, rep, year, loc)) %>%
-    mutate(id = paste0(loc, ".", year)) # Convert data columns to required data classes
-  
-  #trait %>% group_by(id) %>% summarise(n = n()) # shows values per environment
-  
-  #Generate information for repetitions
-  
-  check_list <- get_check_list(trait)
-  
-  env <- check_list$id[which(check_list$rep_indices==2)]
-  
-  env.un <- check_list$id[which(check_list$rep_indices==1)]
-  
-  #For replicated environment follows thoery from the original publication
-  
-  if (length(env) > 0){
-    repeatability <- rep(NA, length(env))
-    residual <- rep(NA,length(env))
     
-    for (i in 1:length(env))
-    {
-      field.red <- trait[which(trait$id == env[i]),] %>% droplevels()
-      asreml.options(maxit = 50,             
-                     workspace = "128mb",       
-                     pworkspace = "128mb",
-                     trace=F)
-      env.1 <- asreml(fixed = value ~  1, 
-                      random = ~ Coding + rep + block:rep,
-                      data = field.red
-      )
-      residual[i] <- summary(env.1)$varcomp["units!R", "component"]
-      repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["block:rep","component"]/2)
+    n_reps <- 2
+    
+    trait <- data %>% 
+      convert(fct(Coding, block, rep, year, loc)) %>%
+      mutate(id = paste0(loc, ".", year)) # Convert data columns to required data classes
+    
+    #trait %>% group_by(id) %>% summarise(n = n()) # shows values per environment
+    
+    #Generate information for repetitions
+    
+    check_list <- get_check_list(trait)
+    
+    env <- check_list$id[which(check_list$rep_indices==2)]
+    
+    env.un <- check_list$id[which(check_list$rep_indices==1)]
+    
+    #For replicated environment follows thoery from the original publication
+    
+    if (length(env) > 0){
+      repeatability <- rep(NA, length(env))
+      residual <- rep(NA,length(env))
       
-      repeatability_df <- data.frame("Environment" = env, "Repeatibility" = repeatability)
-      
-      env.2 <- asreml(fixed = value ~  Coding, 
-                      random = ~ rep + block:rep,
-                      data = field.red
-      )
-      Geno <- predict.asreml(env.2, classify = "Coding",)$pvals[,1:2]
-      colnames(Geno)[2] <- env[i]
-      if (i == 1) {BLUES <- Geno} else {BLUES <- merge(BLUES,Geno)} 
-    }
-    
-    BLUES[,1] <- as.character(BLUES[,1])
-    
-    BLUEs_rep_wide <- BLUES
-    
-    BLUEs_rep <-  pivot_longer(BLUEs_rep_wide, !Coding, names_to = "env", values_to = "trait") %>% convert(fct(env, Coding))
-  }
-  
-  # for unreplicated environments
-  if (pheno %!in% c("ZEL", "SDS")){
-    if (length(env.un) > 0){
-      for (i in 1:length(env.un))
+      for (i in 1:length(env))
       {
-        field.red <- trait[which(trait$id == env.un[i]),] %>% droplevels()
+        field.red <- trait[which(trait$id == env[i]),] %>% droplevels()
         asreml.options(maxit = 50,             
                        workspace = "128mb",       
                        pworkspace = "128mb",
                        trace=F)
         env.1 <- asreml(fixed = value ~  1, 
-                        random = ~ Coding + block,
+                        random = ~ Coding + rep + block:rep,
                         data = field.red
         )
+        residual[i] <- summary(env.1)$varcomp["units!R", "component"]
+        repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["block:rep","component"]/2)
+        
+        repeatability_df <- data.frame("Environment" = env, "Repeatibility" = repeatability)
         
         env.2 <- asreml(fixed = value ~  Coding, 
-                        random = ~ block,
+                        random = ~ rep + block:rep,
                         data = field.red
         )
         Geno <- predict.asreml(env.2, classify = "Coding",)$pvals[,1:2]
-        colnames(Geno)[2] <- env.un[i]
+        colnames(Geno)[2] <- env[i]
         if (i == 1) {BLUES <- Geno} else {BLUES <- merge(BLUES,Geno)} 
       }
       
       BLUES[,1] <- as.character(BLUES[,1])
       
-      BLUEs_unrep_wide <- BLUES
+      BLUEs_rep_wide <- BLUES
       
-      BLUEs_unrep <-  pivot_longer(BLUES, !Coding, names_to = "env", values_to = "trait") %>% 
-        convert(fct(env, Coding))
+      BLUEs_rep <-  pivot_longer(BLUEs_rep_wide, !Coding, names_to = "env", values_to = "trait") %>% convert(fct(env, Coding))
     }
-  } else {
-    if (length(env.un) > 0){
-      BLUEs_unrep <- NULL
-      for (i in env.un){
-        unrep <- (tapply(unlist(trait[which(trait$id == i)[1:400], "value"]), unlist(trait[which(trait$id == i)[1:400], "Coding"]), mean))
-        unrep <- data.frame(names(unrep),as.vector(unrep))
-        unrep$env <- i
-        colnames(unrep)[1:3]<-c("Coding", "trait" ,"env")
-        BLUEs_unrep <- rbind(BLUEs_unrep, unrep[,c("Coding", "env", "trait")])
+    
+    # for unreplicated environments
+    if (pheno %!in% c("ZEL", "SDS")){
+      if (length(env.un) > 0){
+        for (i in 1:length(env.un))
+        {
+          field.red <- trait[which(trait$id == env.un[i]),] %>% droplevels()
+          asreml.options(maxit = 50,             
+                         workspace = "128mb",       
+                         pworkspace = "128mb",
+                         trace=F)
+          env.1 <- asreml(fixed = value ~  1, 
+                          random = ~ Coding + block,
+                          data = field.red
+          )
+          
+          env.2 <- asreml(fixed = value ~  Coding, 
+                          random = ~ block,
+                          data = field.red
+          )
+          Geno <- predict.asreml(env.2, classify = "Coding",)$pvals[,1:2]
+          colnames(Geno)[2] <- env.un[i]
+          if (i == 1) {BLUES <- Geno} else {BLUES <- merge(BLUES,Geno)} 
+        }
+        
+        BLUES[,1] <- as.character(BLUES[,1])
+        
+        BLUEs_unrep_wide <- BLUES
+        
+        BLUEs_unrep <-  pivot_longer(BLUES, !Coding, names_to = "env", values_to = "trait") %>% 
+          convert(fct(env, Coding))
       }
-      BLUEs_unrep_wide <- pivot_wider(BLUEs_unrep, names_from= env, values_from = trait)
-      #if (length(env.un) == 1){colnames(BLUEs_unrep_wide <- c("Coding", env.un))}
+    } else {
+      if (length(env.un) > 0){
+        BLUEs_unrep <- NULL
+        for (i in env.un){
+          unrep <- (tapply(unlist(trait[which(trait$id == i)[1:400], "value"]), unlist(trait[which(trait$id == i)[1:400], "Coding"]), mean))
+          unrep <- data.frame(names(unrep),as.vector(unrep))
+          unrep$env <- i
+          colnames(unrep)[1:3]<-c("Coding", "trait" ,"env")
+          BLUEs_unrep <- rbind(BLUEs_unrep, unrep[,c("Coding", "env", "trait")])
+        }
+        BLUEs_unrep_wide <- pivot_wider(BLUEs_unrep, names_from= env, values_from = trait)
+        #if (length(env.un) == 1){colnames(BLUEs_unrep_wide <- c("Coding", env.un))}
+      }
     }
-  }
-  # merge the two datasets
-  
-  if (length(env.un)>0){
-    if (length(env)>0){
-      com_dta <- rbind(BLUEs_rep, BLUEs_unrep)}else{
-        com_dta <- BLUEs_unrep %>% convert(fct(Coding, env))
+    # merge the two datasets
+    
+    if (length(env.un)>0){
+      if (length(env)>0){
+        com_dta <- rbind(BLUEs_rep, BLUEs_unrep)}else{
+          com_dta <- BLUEs_unrep %>% convert(fct(Coding, env))
+        }
+    }else(com_dta <- BLUEs_rep)
+    
+    # across env. BLUEs
+    
+    com_dta <- com_dta %>% arrange(env, Coding)
+    
+    env.1 <- asreml(fixed = trait ~ 1 , 
+                    random = ~ Coding + env,
+                    data = com_dta
+    )
+    
+    env.2 <- asreml(fixed = trait ~ Coding , 
+                    random = ~ env,
+                    data = com_dta
+    )
+    
+    B.acr <- predict.asreml(env.2, classify = "Coding",)$pvals[, c(1, 2)]
+    colnames(B.acr) <- c("Coding", "Blues.acr")
+    
+    # wide form blues
+    
+    if (length(env.un)>0){
+      if (length(env)>0){
+        message(paste0("There are unreplicated entries in ", pheno, " data!"))
+        com <- merge(BLUEs_rep_wide, BLUEs_unrep_wide)
+        com_BLUEs <- merge(com, B.acr)
+      }else{
+        com_BLUEs <- merge(BLUEs_unrep_wide, B.acr)
       }
-  }else(com_dta <- BLUEs_rep)
-  
-  # across env. BLUEs
-  
-  com_dta <- com_dta %>% arrange(env, Coding)
-  
-  env.1 <- asreml(fixed = trait ~ 1 , 
-                  random = ~ Coding + env,
-                  data = com_dta
-  )
-  
-  env.2 <- asreml(fixed = trait ~ Coding , 
-                  random = ~ env,
-                  data = com_dta
-  )
-  
-  B.acr <- predict.asreml(env.2, classify = "Coding",)$pvals[, c(1, 2)]
-  colnames(B.acr) <- c("Coding", "Blues.acr")
-  
-  # wide form blues
-  
-  if (length(env.un)>0){
-    if (length(env)>0){
-      message(paste0("There are unreplicated entries in ", pheno, " data!"))
-      com <- merge(BLUEs_rep_wide, BLUEs_unrep_wide)
-      com_BLUEs <- merge(com, B.acr)
     }else{
-      com_BLUEs <- merge(BLUEs_unrep_wide, B.acr)
+      com_BLUEs <- merge(BLUEs_rep_wide, B.acr)
     }
-  }else{
-    com_BLUEs <- merge(BLUEs_rep_wide, B.acr)
-    }
+    
   } else if ((pheno %in% traits_trial_2)[1]){
     
+    n_reps <- 3
     trait <- data %>% 
       convert(fct(Coding,rep, year, loc)) %>%
       mutate(id = paste0(loc, ".", year))
@@ -296,8 +301,8 @@ BLUEs <- function(data,
     message(paste0("heritability_plot_based = ", herit_plot))
     
   }else{
-    
-    herit <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(2*length(env))) 
+
+    herit <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(n_reps*length(env))) 
     message(paste0("heritability_entry_mean_based = ", herit))
     
     herit_plot<- sigma.g/(sigma.g + sigma.g.e + sigma.e) 
@@ -379,15 +384,15 @@ traits_trial_2 <- c( "FHB", "DTR", "SEP")
 
 for (i in traits_trial_1){
   
-trait <- i
+  trait <- i
 
-print(i)
+  print(i)
 
-raw_data <- my_data$trial_1[, c("year", "loc", "rep", "block", "Coding", trait)]
+  raw_data <- my_data$trial_1[, c("year", "loc", "rep", "block", "Coding", trait)]
 
-colnames(raw_data)[length(raw_data)] <- "value"
+  colnames(raw_data)[length(raw_data)] <- "value"
 
-check <- BLUEs(raw_data, pheno = trait)
+  check <- BLUEs(raw_data, pheno = trait)
 }
 
 for (i in traits_trial_2){
@@ -403,24 +408,6 @@ for (i in traits_trial_2){
 }
 
 #herit_p
-#Trait Hertitability_plot
-#HD          0.8495466
-#PH          0.8663639
-#YIE          0.4367276
-#SW          0.6915210
-#HAG          0.3475945
-#STC          0.6758751
-#EW          0.3509110
-#TKW          0.7174052
-#PC          0.5278772
-#ZEL          0.7775175
-#GPE          0.3059756
-#GH          0.7488266
-#SDS          0.6870338
-#FHB          0.5584159
-#DTR          0.1106060
-#SEP          0.4366028
-
 #herit_e
 #Trait Hertitability_entry
 #HD                  0.983
@@ -439,3 +426,22 @@ for (i in traits_trial_2){
 #FHB                 0.883
 #DTR                 0.262
 #SEP                 0.694
+
+#Trait Hertitability_plot
+#HD          0.8495466
+#PH          0.8663639
+#YIE          0.4367276
+#SW          0.6915210
+#HAG          0.3475945
+#STC          0.6758751
+#EW          0.3509110
+#TKW          0.7174052
+#PC          0.5278772
+#ZEL          0.7775175
+#GPE          0.3059756
+#GH          0.7488266
+#SDS          0.6870338
+#FHB          0.5584159
+#DTR          0.1106060
+#SEP          0.4366028
+
