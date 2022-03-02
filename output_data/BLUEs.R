@@ -95,7 +95,7 @@ BLUEs <- function(data,
                         data = field.red
         )
         residual[i] <- summary(env.1)$varcomp["units!R", "component"]
-        repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["block:rep","component"]/2)
+        repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["units!R","component"]/n_reps)
         
         repeatability_df <- data.frame("Environment" = env, "Repeatibility" = repeatability)
         
@@ -235,7 +235,7 @@ BLUEs <- function(data,
       )
       
       residual[i] <- summary(env.1)$varcomp["units!R", "component"]
-      repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["units!R","component"]/3)
+      repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["units!R","component"]/n_reps)
       
       repeatability_df <- data.frame("Environment" = env, "Repeatibility" = repeatability)
       
@@ -287,7 +287,7 @@ BLUEs <- function(data,
       sigma.g.e <- NA
       sigma.e <- summary(env.1)$varcomp["units!R","component"]
     }
-  }else{sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-(mean(residual)/2)
+  }else{sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-(mean(residual)/n_reps)
   sigma.e <- mean(residual)
   }  
   
@@ -371,11 +371,11 @@ process_isa_files <- function(study_file_path, assay_file_path){
 
 my_data <- list() #  creates empty list to store loaded data
 
-my_data[["trial_1"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_1/s_trial_1.txt", 
-                                          assay_file_path = "~/GABI/output_data/isa_files/trial_1/a_trial_1.txt") # loads data from trial 1
+my_data[["trial_1"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_1/s_alpha_lattice.txt", 
+                                          assay_file_path = "~/GABI/output_data/isa_files/trial_1/a_alpha_lattice.txt") # loads data from trial 1
 
-my_data[["trial_2"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_2/s_trial_2.txt", 
-                                          assay_file_path = "~/GABI/output_data/isa_files/trial_2/a_trial_2.txt") # loads data fro trial 2
+my_data[["trial_2"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_2/s_RCBD.txt", 
+                                          assay_file_path = "~/GABI/output_data/isa_files/trial_2/a_RCBD_2.txt") # loads data fro trial 2
 
 traits_trial_1 <- c("HD", "PH", "TKW" , "EW", "GPE", "GY", "SW", "GH", "STC", "PC", "SDS", "HAG", "ZEL") 
 traits_trial_2 <- c( "FHB", "DTR", "SEP") 
