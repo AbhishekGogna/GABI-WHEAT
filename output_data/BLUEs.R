@@ -60,8 +60,7 @@ BLUEs <- function(data,
                   BLUE = T){
   
   if ((pheno %in% traits_trial_1)[1]){
-    
-    n_reps <- 2
+    n_reps <- 2 # i put n_reps as fixed for calculation of repeatabilites / hritabilities. You could choose to put mean(check_list$rep_indices) in its place. 
     
     trait <- data %>% 
       convert(fct(Coding, block, rep, year, loc)) %>%
@@ -77,6 +76,13 @@ BLUEs <- function(data,
     
     env.un <- check_list$id[which(check_list$rep_indices==1)]
     
+    # set asreml options
+    asreml.options(maxit = 50,             
+                   workspace = "128mb",       
+                   pworkspace = "128mb",
+                   trace=F,
+                   extra = 10)
+    
     #For replicated environment follows thoery from the original publication
     
     if (length(env) > 0){
@@ -86,22 +92,19 @@ BLUEs <- function(data,
       for (i in 1:length(env))
       {
         field.red <- trait[which(trait$id == env[i]),] %>% droplevels()
-        asreml.options(maxit = 50,             
-                       workspace = "128mb",       
-                       pworkspace = "128mb",
-                       trace=F)
+        
         env.1 <- asreml(fixed = value ~  1, 
                         random = ~ Coding + rep + block:rep,
-                        data = field.red
+                        data = field.red # from methods formula (1)
         )
         residual[i] <- summary(env.1)$varcomp["units!R", "component"]
-        repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["units!R","component"]/n_reps)
+        repeatability[i] <- summary(env.1)$varcomp["Coding","component"]/(summary(env.1)$varcomp["Coding","component"] + summary(env.1)$varcomp["units!R","component"]/n_reps)  # from methods formula (2)
         
         repeatability_df <- data.frame("Environment" = env, "Repeatibility" = repeatability)
         
         env.2 <- asreml(fixed = value ~  Coding, 
                         random = ~ rep + block:rep,
-                        data = field.red
+                        data = field.red  # from methods formula (1)
         )
         Geno <- predict.asreml(env.2, classify = "Coding",)$pvals[,1:2]
         colnames(Geno)[2] <- env[i]
@@ -121,14 +124,11 @@ BLUEs <- function(data,
         for (i in 1:length(env.un))
         {
           field.red <- trait[which(trait$id == env.un[i]),] %>% droplevels()
-          asreml.options(maxit = 50,             
-                         workspace = "128mb",       
-                         pworkspace = "128mb",
-                         trace=F)
-          env.1 <- asreml(fixed = value ~  1, 
-                          random = ~ Coding + block,
-                          data = field.red
-          )
+          
+          #env.1 <- asreml(fixed = value ~  1, 
+          #                random = ~ Coding + block,
+          #                data = field.red
+          #) # not needed hence put out
           
           env.2 <- asreml(fixed = value ~  Coding, 
                           random = ~ block,
@@ -150,7 +150,7 @@ BLUEs <- function(data,
       if (length(env.un) > 0){
         BLUEs_unrep <- NULL
         for (i in env.un){
-          unrep <- (tapply(unlist(trait[which(trait$id == i)[1:400], "value"]), unlist(trait[which(trait$id == i)[1:400], "Coding"]), mean))
+          unrep <- (tapply(unlist(trait[which(trait$id == i)[1:400], "value"]), unlist(trait[which(trait$id == i)[1:400], "Coding"]), mean)) # 1:400 are entries in a given replication
           unrep <- data.frame(names(unrep),as.vector(unrep))
           unrep$env <- i
           colnames(unrep)[1:3]<-c("Coding", "trait" ,"env")
@@ -201,8 +201,10 @@ BLUEs <- function(data,
     }
     
   } else if ((pheno %in% traits_trial_2)[1]){
+    # put different from traits_trial_1 since these do not have block structure 
     
-    n_reps <- 3
+    n_reps <- 3 # i put n_reps as fixed for calculation of repeatabilites / hritabilities. You could choose to put mean(check_list$rep_indices) in its place. 
+    
     trait <- data %>% 
       convert(fct(Coding,rep, year, loc)) %>%
       mutate(id = paste0(loc, ".", year))
@@ -225,13 +227,9 @@ BLUEs <- function(data,
       env_n <- env[i] %>% as.character()
       field.red <- trait %>% filter(id == env_n) %>% droplevels()
       
-      asreml.options(maxit = 50,             
-                     workspace = "128mb",       
-                     pworkspace = "128mb",
-                     trace=F)
       env.1 <- asreml(fixed = value ~  1, 
                       random = ~ Coding + rep,
-                      data = field.red
+                      data = field.red  # from methods formula (6)
       )
       
       residual[i] <- summary(env.1)$varcomp["units!R", "component"]
@@ -239,12 +237,12 @@ BLUEs <- function(data,
       
       repeatability_df <- data.frame("Environment" = env, "Repeatibility" = repeatability)
       
-      env.1 <- asreml(fixed = value ~  Coding, 
+      env.2 <- asreml(fixed = value ~  Coding, 
                       random = ~ rep,
                       data = field.red
-      )
+      )  # from methods formula (7)
       
-      Geno <- predict.asreml(env.1, classify = "Coding",)$pvals[,1:2]
+      Geno <- predict.asreml(env.2, classify = "Coding",)$pvals[,1:2]
       
       colnames(Geno)[2] <- paste0(as.character(env[i]), ".", pheno)
       
@@ -263,11 +261,11 @@ BLUEs <- function(data,
     env.1 <- asreml(fixed = trait ~ 1 , 
                     random = ~ Coding + env,
                     data = dta
-    )
+    )  # from methods formula (3)
     
     env.2 <- asreml(fixed = trait ~  Coding, 
                     random = ~ env,
-                    data = dta)
+                    data = dta)   # from methods formula (3)
     Blues.acr <- predict.asreml(env.2, classify = "Coding",)$pvals[,2]
     
     # wide form blues
@@ -281,7 +279,7 @@ BLUEs <- function(data,
   
   if (length(env.un)>0){
     if (length(env)>0){
-      sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-mean(residual)/mean(check_list$rep_indices)
+      sigma.g.e <- summary(env.1)$varcomp["units!R","component"]-(mean(residual)/n_reps)
       sigma.e <- mean(residual)
     }else{
       sigma.g.e <- NA
@@ -293,8 +291,8 @@ BLUEs <- function(data,
   
   if(is.na(sigma.g.e)){
     
-    herit <-  sigma.g/(sigma.g + sigma.e/length(env.un)) 
-    message(paste0("Since there are no replicates the term for sigma g_e was omitted"))
+    herit <-  sigma.g/(sigma.g + sigma.e/length(env.un))  
+    message(paste0("Since there are no replicates the term for sigma.g.e was omitted"))
     message( paste0("heritability_entry_mean_based = ", herit))
     
     herit_plot<- sigma.g/(sigma.g + sigma.e) 
@@ -302,10 +300,10 @@ BLUEs <- function(data,
     
   }else{
 
-    herit <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(n_reps*length(env))) 
+    herit <- sigma.g/(sigma.g + sigma.g.e/length(env) + sigma.e/(n_reps*length(env)))    # from methods formula (5)
     message(paste0("heritability_entry_mean_based = ", herit))
     
-    herit_plot<- sigma.g/(sigma.g + sigma.g.e + sigma.e) 
+    herit_plot<- sigma.g/(sigma.g + sigma.g.e + sigma.e)   # from methods formula (4)
     message(paste0("heritability_plot_based = ", herit_plot))
   }
   

@@ -1,17 +1,17 @@
 ONTOLOGY SOURCE REFERENCE
-Term Source Name	wheatpedigree	proplanta	NCBITaxon	UO
-Term Source File	http://wheatpedigree.net/	https://www.proplanta.de/Pflanzenbauberater/Sorten/	http://purl.obolibrary.org/obo/ncbitaxon	http://www.ontobee.org/ontology/UO?iri=http://purl.obolibrary.org/obo/
-Term Source Version				
-Term Source Description	Pedigrees of cultivars	Cultivar information	Agronomy Ontology	Units of Measurement Ontology
+Term Source Name	NCBITaxon	UO
+Term Source File	http://purl.obolibrary.org/obo/ncbitaxon	http://www.ontobee.org/ontology/UO?iri=http://purl.obolibrary.org/obo/
+Term Source Version		
+Term Source Description	Agronomy Ontology	Units of Measurement Ontology
 INVESTIGATION
 Investigation Identifier	
-Investigation Title	Panel of pan-european elite wheat cultivars
-Investigation Description	In plant sciences, curation of quality phenotypic data often traverses temporal scales that extend well into few years and are thus a constant impediment for rapid scientific discoveries therein. To that end, supplementing the rapid efforts being made to generate open access wheat genome, pan wheat genome and other bioinformatic resources, we present herein the phenotypic data of a time-tested elite European cultivar panel comprising 358 winter and 14 summer wheat varieties released between 1975 to 2007.
-Investigation Submission Date	2022-02-22
+Investigation Title	Disease phenotypic data of a panel of pan-european elite wheat cultivars
+Investigation Description	We present herein the phenotypic data of an elite European cultivar panel comprising 358 winter and 14 summer wheat varieties released between 1975 to 2007.
+Investigation Submission Date	2022-03-02
 Investigation Public Release Date	
 Comment[Consortium URI]	
 Comment[Investigation Keywords]	
-Comment[License]	CC BY-NC-SA 4.0
+Comment[License]	CC BY-SA 4.0
 Comment[MIAPPE version]	1.1
 Comment[Owning Organisation URI]	http://www.ipk-gatersleben.de/
 INVESTIGATION PUBLICATIONS
@@ -29,19 +29,19 @@ Investigation Person Mid Initials		W.	S.	W.	C.
 Investigation Person Email	gogna@ipk-gatersleben.de	schulthess@ipk-gatersleben.de	roder@ipk-gatersleben.de	martin.ganal@sgs.com	reif@ipk-gatersleben.de
 Investigation Person Phone					+49 39482 5-840
 Investigation Person Fax					
-Investigation Person Address	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany		Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany
-Investigation Person Affiliation	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Traitgenetics	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben
+Investigation Person Address	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	TraitGenetics Section Am Schwabeplan 1b, D-06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany
+Investigation Person Affiliation	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	SGS INSTITUT FRESENIUS GmbH	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben
 Investigation Person Roles					
 Investigation Person Roles Term Accession Number					
 Investigation Person Roles Term Source REF					
-Comment[Person ID]	https://orcid.org/0000-0002-5990-1829	https://orcid.org/0000-0002-9365-0939	https://orcid.org/0000-0002-9313-0650		https://orcid.org/0000-0002-6742-265X
+Comment[Person ID]	https://orcid.org/0000-0002-5990-1829	https://orcid.org/0000-0002-9365-0939	https://orcid.org/0000-0002-9313-0650	https://orcid.org/0000-0002-6649-8441	https://orcid.org/0000-0002-6742-265X
 STUDY
-Study Identifier	trial_2
+Study Identifier	RCBD_trial_data
 Study Title	Disease traits
 Study Description	Phenotypic data for disease traits
 Study Submission Date	
 Study Public Release Date	
-Study File Name	s_trial_2.txt
+Study File Name	s_RCBD.txt
 Comment[Study Contact Institution]	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK), OT Gatersleben, Corrensstrasse 3, D-06466 Seeland
 Comment[Study Country]	Germany
 Comment[Study End Date]	
@@ -53,6 +53,7 @@ STUDY DESIGN DESCRIPTORS
 Study Design Type	
 Study Design Type Term Accession Number	
 Study Design Type Term Source REF	
+Comment[Study Design Description]	Randomised complete block design (RCBD)
 Comment[Observation Unit Level Hierarchy]	year>location>replication
 Comment[Observation Unit Description]	plot
 STUDY PUBLICATIONS
@@ -68,10 +69,10 @@ Study Factor Name	year	loc	rep
 Study Factor Type	year	location	replication
 Study Factor Type Term Accession Number			
 Study Factor Type Term Source REF			
-Comment[Study Factor Description]	year	location	replication
+Comment[Study Factor Description]	Years in which the trial were conducted	Levels of factor location are Ahlum (AHL), Cecilienkoog (CEC), Halle-Bodenwerder (BOD) and  Lafferde (LAF). These are the locations used for trials	The replication numbers used in a given environment (location + year) of trials
 Comment[Study Factor Values]	2009;2010	AHL;CEC;BOD;LAF	1;2;3
 STUDY ASSAYS
-Study Assay File Name	a_trial_2.txt
+Study Assay File Name	a_RCBD.txt
 Study Assay Measurement Type	Disease traits
 Study Assay Measurement Type Term Accession Number	
 Study Assay Measurement Type Term Source REF	
@@ -80,20 +81,20 @@ Study Assay Technology Type Term Accession Number
 Study Assay Technology Type Term Source REF	
 Study Assay Technology Platform	
 STUDY PROTOCOLS
-Study Protocol Name	Phenotyping
-Study Protocol Type	Manual scoring
-Study Protocol Type Term Accession Number	
-Study Protocol Type Term Source REF	
-Study Protocol Description	
-Study Protocol URI	
-Study Protocol Version	
-Study Protocol Parameters Name	FHB;DTR;SEP
-Study Protocol Parameters Name Term Accession Number	;;
-Study Protocol Parameters Name Term Source REF	UO;UO;UO
-Study Protocol Components Name	
-Study Protocol Components Type	
-Study Protocol Components Type Term Accession Number	
-Study Protocol Components Type Term Source REF	
+Study Protocol Name	Phenotyping	
+Study Protocol Type	Manual scoring	
+Study Protocol Type Term Accession Number		
+Study Protocol Type Term Source REF		
+Study Protocol Description	The protocols are defined seperately for the three parameters i.e. Resistance score to fusarium head blight (FHB), Resistance to tan spot (DTR) and Resistance to septoria blotch (SEP). Briefly, the scores are average of multiple measurements taken per plot for desease severity over the growing season in a given environment (year + location). Please refer to main paper for detailed descriptions.	
+Study Protocol URI		
+Study Protocol Version		
+Study Protocol Parameters Name	FHB;DTR;SEP	
+Study Protocol Parameters Name Term Accession Number	;;	
+Study Protocol Parameters Name Term Source REF	;;	
+Study Protocol Components Name		
+Study Protocol Components Type		
+Study Protocol Components Type Term Accession Number		
+Study Protocol Components Type Term Source REF		
 STUDY CONTACTS
 Study Person Last Name	Gogna	Schulthess	Röder	Martin	Reif
 Study Person First Name	Abhishek	Albert	Marion	Ganal	Jochen
@@ -101,9 +102,9 @@ Study Person Mid Initials		W.	S.	W.	C.
 Study Person Email	gogna@ipk-gatersleben.de	schulthess@ipk-gatersleben.de	roder@ipk-gatersleben.de	martin.ganal@sgs.com	reif@ipk-gatersleben.de
 Study Person Phone					+49 39482 5-840
 Study Person Fax					
-Study Person Address	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany		Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany
-Study Person Affiliation	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Traitgenetics	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben
+Study Person Address	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany	TraitGenetics Section Am Schwabeplan 1b, D-06466 Stadt Seeland, OT Gatersleben, Germany	Corrensstrasse 3, 06466 Stadt Seeland, OT Gatersleben, Germany
+Study Person Affiliation	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben	SGS INSTITUT FRESENIUS GmbH	Leibniz Institute of Plant Genetics and Crop Plant Research (IPK) Gatersleben
 Study Person Roles					
 Study Person Roles Term Accession Number					
 Study Person Roles Term Source REF					
-Comment[Person ID]	https://orcid.org/0000-0002-5990-1829	https://orcid.org/0000-0002-9365-0939	https://orcid.org/0000-0002-9313-0650		https://orcid.org/0000-0002-6742-265X
+Comment[Person ID]	https://orcid.org/0000-0002-5990-1829	https://orcid.org/0000-0002-9365-0939	https://orcid.org/0000-0002-9313-0650	https://orcid.org/0000-0002-6649-8441	https://orcid.org/0000-0002-6742-265X
