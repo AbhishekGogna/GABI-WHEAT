@@ -365,6 +365,29 @@ process_isa_files <- function(study_file_path, assay_file_path){
   return(phenodata)
 }
 
+plot_herit <- function(list) {
+  output <- list()
+  for (i in names(list)){
+    output[[i]] <- list[[i]]["Heritabiliy_plot"]
+  }
+  output_df <- data.frame("Trait" = gsub("(\\S+)\\.\\S+\\_.*", "\\1"
+                                         , names(unlist(output)), perl = T)
+                          , "Hertitability_plot" = unname(unlist(output))) 
+  return(output_df)
+}
+
+entry_herit <- function(list) {
+  output <- list()
+  for (i in names(list)){
+    output[[i]] <- list[[i]]["Heritabiliy_entry"]
+  }
+  output_df <- data.frame("Trait" = gsub("(\\S+)\\.\\S+\\_.*", "\\1"
+                                         , names(unlist(output)), perl = T)
+                          , "Hertitability_entry" = unname(unlist(output))) %>%
+    convert(fct(Trait))
+  return(output_df)
+}
+
 # Load data for two trials
 
 my_data <- list() #  creates empty list to store loaded data
@@ -380,6 +403,8 @@ traits_trial_2 <- c( "FHB", "DTR", "SEP")
 
 # Calculate BLUES
 
+store_all_output <- list()
+
 for (i in traits_trial_1){
   
   trait <- i
@@ -390,7 +415,7 @@ for (i in traits_trial_1){
 
   colnames(raw_data)[length(raw_data)] <- "value"
 
-  check <- BLUEs(raw_data, pheno = trait)
+  store_all_output[[i]] <- BLUEs(raw_data, pheno = trait)
 }
 
 for (i in traits_trial_2){
@@ -402,44 +427,32 @@ for (i in traits_trial_2){
   
   colnames(raw_data)[length(raw_data)] <- "value"
   
-  check <- BLUEs(raw_data, pheno = trait)
+  store_all_output[[i]] <- BLUEs(raw_data, pheno = trait)
 }
 
-#herit_p
-#herit_e
-#Trait Hertitability_entry
-#HD                  0.983
-#PH                  0.986
-#YIE                 0.885
-#SW                  0.946
-#HAG                 0.748
-#STC                 0.884
-#EW                  0.654
-#TKW                 0.950
-#PC                  0.840
-#ZEL                 0.950
-#GPE                 0.503
-#GH                 NA    
-#SDS                NA    
-#FHB                 0.883
-#DTR                 0.262
-#SEP                 0.694
+# check heritablilities
 
-#Trait Hertitability_plot
-#HD          0.8495466
-#PH          0.8663639
-#YIE          0.4367276
-#SW          0.6915210
-#HAG          0.3475945
-#STC          0.6758751
-#EW          0.3509110
-#TKW          0.7174052
-#PC          0.5278772
-#ZEL          0.7775175
-#GPE          0.3059756
-#GH          0.7488266
-#SDS          0.6870338
-#FHB          0.5584159
-#DTR          0.1106060
-#SEP          0.4366028
+herit <- plot_herit(store_all_output) %>% 
+  left_join(entry_herit(store_all_output), by = "Trait")
+
+# values i produced
+
+#Trait Hertitability_plot Hertitability_entry
+#HD          0.8495462           0.9832407
+#PH          0.8663641           0.9858973
+#TKW          0.7022659           0.9445112
+#EW          0.3509120           0.6540255
+#GPE          0.3005748           0.4958687
+#GY          0.4367285           0.8850901
+#SW          0.6915210           0.9458670
+#GH          0.7488045           0.9226237
+#STC          0.6758745           0.8839153
+#PC          0.5156306           0.8325704
+#SDS          0.7358135           0.9176333
+#HAG          0.3475953           0.7478804
+#ZEL          0.7735023           0.9483337
+#FHB          0.5584156           0.9007160
+#DTR          0.1106081           0.2924300
+#SEP          0.4366014           0.7284495
+
 
