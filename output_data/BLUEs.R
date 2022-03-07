@@ -399,7 +399,7 @@ my_data[["trial_1"]] <- process_isa_files(study_file_path = "/path to files/isa_
                                           assay_file_path = "/path to files/isa_files/trial_1/a_alpha_lattice.txt") # loads data from trial 1
 
 my_data[["trial_2"]] <- process_isa_files(study_file_path = "/path to files/isa_files/trial_2/s_RCBD.txt", 
-                                          assay_file_path = "/path to files/isa_files/trial_2/a_RCBD.txt") # loads data fro trial 2
+                                          assay_file_path = "/path to files/isa_files/trial_2/a_RCBD.txt") # loads data from trial 2
 
 traits_trial_1 <- c("HD", "PH", "TKW" , "EW", "GPE", "GY", "SW", "GH", "STC", "PC", "SDS", "HAG", "ZEL") 
 traits_trial_2 <- c( "FHB", "DTR", "SEP") 
