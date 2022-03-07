@@ -390,13 +390,16 @@ entry_herit <- function(list) {
 
 # Load data for two trials
 
+#the files may be downloaded at https://doi.ipk-gatersleben.de/DOI/6c9a091d-2de4-4db5-a862-393a98183691/52f2f989-a332-4aa9-a461-168833766757/2/1847940088
+
+
 my_data <- list() #  creates empty list to store loaded data
 
-my_data[["trial_1"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_1/s_alpha_lattice.txt", 
-                                          assay_file_path = "~/GABI/output_data/isa_files/trial_1/a_alpha_lattice.txt") # loads data from trial 1
+my_data[["trial_1"]] <- process_isa_files(study_file_path = "/path to files/isa_files/trial_1/s_alpha_lattice.txt", 
+                                          assay_file_path = "/path to files/isa_files/trial_1/a_alpha_lattice.txt") # loads data from trial 1
 
-my_data[["trial_2"]] <- process_isa_files(study_file_path = "~/GABI/output_data/isa_files/trial_2/s_RCBD.txt", 
-                                          assay_file_path = "~/GABI/output_data/isa_files/trial_2/a_RCBD.txt") # loads data fro trial 2
+my_data[["trial_2"]] <- process_isa_files(study_file_path = "/path to files/isa_files/trial_2/s_RCBD.txt", 
+                                          assay_file_path = "/path to files/isa_files/trial_2/a_RCBD.txt") # loads data fro trial 2
 
 traits_trial_1 <- c("HD", "PH", "TKW" , "EW", "GPE", "GY", "SW", "GH", "STC", "PC", "SDS", "HAG", "ZEL") 
 traits_trial_2 <- c( "FHB", "DTR", "SEP") 
