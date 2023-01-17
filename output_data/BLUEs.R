@@ -390,7 +390,7 @@ entry_herit <- function(list) {
 
 # Load data for two trials
 
-#the files may be downloaded at https://doi.ipk-gatersleben.de/DOI/6c9a091d-2de4-4db5-a862-393a98183691/52f2f989-a332-4aa9-a461-168833766757/2/1847940088
+#the files may be downloaded at https://doi.org/10.5447/IPK/2022/18
 
 
 my_data <- list() #  creates empty list to store loaded data
